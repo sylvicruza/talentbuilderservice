@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PrivilegeRepository extends CrudRepository<Privilege, Long> {
 
-	public Privilege findById(long id);
+	Privilege findById(long id);
 
-	public Privilege findByName(UserPrivilageType name);
+	Privilege findByName(UserPrivilageType name);
 	
 }

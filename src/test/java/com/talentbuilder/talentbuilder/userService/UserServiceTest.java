@@ -38,14 +38,14 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void findByPhoneOrEmail() throws Exception {
+	public void findByPhoneOrEmail() {
 		User user = userService.findByEmail("admin@talentbuilder.com");
 		assertEquals(user.getEmail(), "admin@talentbuilder.com");
 	}
 	
 	
 	@Test
-	public void Login() throws Exception {
+	public void Login() {
 		
 		SignInRequest signInRequest = new SignInRequest();
 		signInRequest.setPassword("password");
@@ -61,7 +61,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void ActivateUser() throws Exception {
+	public void ActivateUser() {
 		String otp = "090909";
 		ServerResponse response = userService.userActivation(otp);
 		System.out.println(response.getMessage());
@@ -69,7 +69,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void PasswordRestRequest() throws Exception {
+	public void PasswordRestRequest() {
 		String email = "admin@talentbuilder.com";
 		ServerResponse response = userService.reSendUserPassword(email);
 		assertEquals(response.isSuccess(), true);
@@ -77,7 +77,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void ResendUserActivation() throws Exception {
+	public void ResendUserActivation() {
 		String email = "admin@talentbuilder.com";
 		ServerResponse response = userService.sendOtp(email);
 		assertEquals(response.isSuccess(), true);
@@ -85,7 +85,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void PasswordReset() throws Exception {
+	public void PasswordReset() {
 		PasswordRestDto request = new PasswordRestDto();
 		String otp = "913961";
 		String password = "password";
