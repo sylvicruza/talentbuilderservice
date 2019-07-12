@@ -194,7 +194,7 @@ public class UserServiceImpl implements UserService {
 			String otp = Utility.generateRandomString(40);
 			user.setOtp(otp);
 
-			model.put("code", appConstants.APP_WEB_URL + "/verify/" +otp);
+			model.put("code", appConstants.APP_WEB_URL + "/confirmation?token=" +otp);
 			mail.setSubject("Verify");
 			mail.setModel(model);
 			mail.setTemplate("verify.ftl");
