@@ -285,7 +285,7 @@ public class UserServiceImpl implements UserService {
 			model.put("title", "Account verified");
 			model.put("salutation", "Hello " + user.getFirstName());
 			model.put("message", "Your account has been verified. Kindly logon.");
-			model.put("link", appConstants.APP_WEB_URL + "/");
+			model.put("link", appConstants.APP_WEB_URL + "/signin");
 			mail.setModel(model);
 			mail.setTemplate("general.ftl");
 			emailService.sendSimpleMessage(mail);
@@ -312,6 +312,13 @@ public class UserServiceImpl implements UserService {
 			if (user == null) {
 				return new ServerResponse(false,
 						"Email does not exist",
+						"",
+						ServerResponseStatus.FAILED);
+			}
+
+			if (user.isActive()){
+				return new ServerResponse(false,
+						"Account has been activated",
 						"",
 						ServerResponseStatus.FAILED);
 			}
@@ -363,7 +370,7 @@ public class UserServiceImpl implements UserService {
 			mail.setFrom(appConstants.MAIL_USERNAME);
 
 			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("link", appConstants.APP_WEB_URL + "/password-rest/" + otp);
+			model.put("link", appConstants.APP_WEB_URL + "/password-rest?token=" + otp);
 			mail.setSubject("Password reset");
 			mail.setModel(model);
 			mail.setTemplate("password_reset.ftl");
@@ -407,7 +414,7 @@ public class UserServiceImpl implements UserService {
 			model.put("title", "Password Reset");
 			model.put("salutation", "Hello " + user.getFirstName());
 			model.put("message", "Your password has been reset. Kindly logon.");
-			model.put("link", appConstants.APP_WEB_URL + "/");
+			model.put("link", appConstants.APP_WEB_URL + "/signin");
 			mail.setModel(model);
 			mail.setTemplate("general.ftl");
 			emailService.sendSimpleMessage(mail);
