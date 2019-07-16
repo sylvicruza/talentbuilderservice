@@ -324,7 +324,7 @@ public class UserServiceImpl implements UserService {
 			mail.setFrom(appConstants.MAIL_USERNAME);
 
 			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("code", appConstants.APP_WEB_URL + "/verify/" +otp);
+			model.put("code", appConstants.APP_WEB_URL + "/confirmation?token=" +otp);
 			mail.setSubject("Verify");
 			mail.setModel(model);
 			mail.setTemplate("verify.ftl");
