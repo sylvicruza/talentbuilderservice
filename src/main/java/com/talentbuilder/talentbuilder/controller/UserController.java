@@ -61,7 +61,7 @@ public class UserController {
 	}
 
 	
-	@ApiOperation(value = "Verify and Activate otp", response = ServerResponse.class)
+	@ApiOperation(value = "Verify and Activate user", response = ServerResponse.class)
 	@RequestMapping(value = "/otp/verify", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> ActivateUser(@RequestParam("otp") String otp){
@@ -81,7 +81,7 @@ public class UserController {
 		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
 	}
 	
-	@ApiOperation(value = "Generate otp", response = ServerResponse.class)
+	@ApiOperation(value = "Resend verification token", response = ServerResponse.class)
 	@RequestMapping(value = "/otp", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> ResendUserActivation(@RequestParam("email") String email){
@@ -102,7 +102,7 @@ public class UserController {
 	
 	
 	@ApiOperation(value = "Password recovery", response = ServerResponse.class)
-	@RequestMapping(value = "/password-rest", method = RequestMethod.POST)
+	@RequestMapping(value = "/password-reset", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> PasswordRestRequest(@RequestParam("email") String email){
 

@@ -370,7 +370,7 @@ public class UserServiceImpl implements UserService {
 			mail.setFrom(appConstants.MAIL_USERNAME);
 
 			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("link", appConstants.APP_WEB_URL + "/password-rest?token=" + otp);
+			model.put("link", appConstants.APP_WEB_URL + "/password-reset?token=" + otp);
 			mail.setSubject("Password reset");
 			mail.setModel(model);
 			mail.setTemplate("password_reset.ftl");
