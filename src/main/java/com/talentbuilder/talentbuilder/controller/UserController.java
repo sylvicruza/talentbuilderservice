@@ -4,6 +4,7 @@ package com.talentbuilder.talentbuilder.controller;
 import com.talentbuilder.talentbuilder.dto.ServerResponse;
 import com.talentbuilder.talentbuilder.dto.SignInRequest;
 import com.talentbuilder.talentbuilder.dto.SignUpRequest;
+import com.talentbuilder.talentbuilder.dto.UpdateUserDto;
 import com.talentbuilder.talentbuilder.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,10 +44,10 @@ public class UserController {
 		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
 	}
 
-	@ApiOperation(value = "Update user details", response = ServerResponse.class)
+	@ApiOperation(value = "Update user profile details", response = ServerResponse.class)
 	@RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
 	@ResponseBody
-	public ResponseEntity<?> update(@RequestHeader("Authorization")  String authorization, @PathVariable("userId") String userId, @RequestBody SignUpRequest request){
+	public ResponseEntity<?> update(@RequestHeader("Authorization")  String authorization, @PathVariable("userId") String userId, @RequestBody UpdateUserDto request){
 
 		ServerResponse response = new ServerResponse();
 

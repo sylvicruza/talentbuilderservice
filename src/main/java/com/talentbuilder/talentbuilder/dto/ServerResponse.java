@@ -86,5 +86,16 @@ public class ServerResponse {
 				"",
 				ServerResponseStatus.INTERNAL_SERVER_ERROR);
 	}
+
+	public static ServerResponse badRequest(String message){
+		return new ServerResponse(false,
+				message,
+				"",
+				ServerResponseStatus.FAILED);
+	}
+
+	public static boolean isValidInput(String input){
+		return input != null && !input.isEmpty();
+	}
     
 }
