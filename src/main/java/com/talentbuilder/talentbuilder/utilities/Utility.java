@@ -38,12 +38,6 @@ public class Utility {
         return EmailValidator.getInstance(true).isValid(email);
     }
 
-    public static boolean isValidPhone(String phone){
-        return phone.startsWith("+234") && phone.length() > 13 || phone.startsWith("234") && phone.length() > 9 || phone.startsWith("070") && phone.length() > 9
-                || phone.startsWith("080") && phone.length() > 9 || phone.startsWith("090") && phone.length() > 9
-                || phone.startsWith("0") && phone.length() > 9;
-    }
-
     public static String otp(){
         Random random = new Random();
         String numb = String.valueOf(100000 + random.nextInt(900000));

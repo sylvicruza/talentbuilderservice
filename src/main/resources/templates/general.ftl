@@ -12,7 +12,7 @@ p {font-family:Georgia, serif;font-size:14px;font-style:normal;font-weight:norma
 </head>
 <body>
 <h1>${title}</h1>
-<p>Hello ${salutation}!</p>
+<p>${salutation}!</p>
 <p> </p>
 <p> ${message}</p>
 <p> </p>
