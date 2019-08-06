@@ -240,12 +240,4 @@ public class User implements Serializable{
     public void setLinkendin(String linkendin) {
         this.linkendin = linkendin;
     }
-
-    public String getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
 }
