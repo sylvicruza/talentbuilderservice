@@ -34,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         logger.info("NOW STARTING AUTHENTICATION AT USER DETAILS SERVICE");
 
-        User account = accountService.findByPhoneOrEmail(emailOrphone);
+        User account = accountService.findByUsernameOrEmail(emailOrphone);
         
         if(account == null){
         	throw new UsernameNotFoundException("user not exists");

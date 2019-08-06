@@ -2,9 +2,7 @@ package com.talentbuilder.talentbuilder.impl;
 
 import com.talentbuilder.talentbuilder.constant.AppConstants;
 import com.talentbuilder.talentbuilder.constant.ServerResponseStatus;
-import com.talentbuilder.talentbuilder.dto.ServerResponse;
-import com.talentbuilder.talentbuilder.dto.SignInRequest;
-import com.talentbuilder.talentbuilder.dto.SignUpRequest;
+import com.talentbuilder.talentbuilder.dto.*;
 import com.talentbuilder.talentbuilder.enumType.UserPrivilageType;
 import com.talentbuilder.talentbuilder.enumType.UserRoleType;
 import com.talentbuilder.talentbuilder.mail.EmailService;
@@ -14,11 +12,14 @@ import com.talentbuilder.talentbuilder.model.User;
 import com.talentbuilder.talentbuilder.repository.PrivilegeRepository;
 import com.talentbuilder.talentbuilder.repository.UserRepository;
 import com.talentbuilder.talentbuilder.service.UserService;
+import com.talentbuilder.talentbuilder.utilities.AmazonClient;
 import com.talentbuilder.talentbuilder.utilities.OtpService;
+import com.talentbuilder.talentbuilder.utilities.PasswordValidator;
 import com.talentbuilder.talentbuilder.utilities.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -47,6 +48,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	OtpService otpService;
+
+	@Autowired
+	private AmazonClient amazonClient;
 
 	@Override
 	public Collection<User> findAll(){
@@ -86,9 +90,9 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User findByPhone(String phone){
+	public User findByUsernameOrEmail(String emailOrUsername){
 		try {
-			return userRepository.findByUsername(phone);
+			return userRepository.findByUsernameOrEmail(emailOrUsername, emailOrUsername);
 		} catch (Exception e) {
 		
 			e.printStackTrace();
@@ -96,67 +100,48 @@ public class UserServiceImpl implements UserService {
 		return null;
 		
 	}
-	
-	@Override
-	public User findByPhoneOrEmail(String emailOrphone){
-		try {
-			return userRepository.findByUsernameOrEmail(emailOrphone, emailOrphone);
-		} catch (Exception e) {
-		
-			e.printStackTrace();
+
+	public ServerResponse validateSignUpRequest(SignUpRequest request){
+		if (!Utility.isValidEmail(request.getEmail())) {
+			return ServerResponse.badRequest("Enter a correct email address");
+		}
+
+		if (!Utility.isValidInput(request.getUsername())) {
+			return ServerResponse.badRequest("Please provide username");
+		}
+
+		if (!Utility.isValidInput(request.getFirstName())) {
+			return ServerResponse.badRequest("Please enter firstname");
+		}
+
+		if (!Utility.isValidInput(request.getLastName())) {
+			return ServerResponse.badRequest("Please enter lastname");
+		}
+
+		if (!Utility.isValidInput(request.getPassword())) {
+			return ServerResponse.badRequest("Please provide password");
+		}
+
+		if (!PasswordValidator.validate(request.getPassword())) {
+			return ServerResponse.badRequest("Wrong password format!!!");
 		}
 		return null;
-		
 	}
 
 	@Override
 	public ServerResponse create(SignUpRequest request){
 		ServerResponse response = new ServerResponse();
 
-		if (!Utility.isValidInput(request.getEmail()) || !Utility.isValidEmail(request.getEmail())) {
-			return new ServerResponse(false,
-					"Enter a correct email address",
-					"",
-					ServerResponseStatus.FAILED);
-		}
-		
-		if (!Utility.isValidInput(request.getUsername())) {
-			return new ServerResponse(false,
-					"Please provide username",
-					"",
-					ServerResponseStatus.FAILED);
-		}
-		
-		if (!Utility.isValidInput(request.getFirstName())) {
-			return new ServerResponse(false,
-					"Please enter firstname",
-					"",
-					ServerResponseStatus.FAILED);
-		}
-		
-		if (!Utility.isValidInput(request.getLastName())) {
-			return new ServerResponse(false,
-					"Please enter lastname",
-					"",
-					ServerResponseStatus.FAILED);
+		if (validateSignUpRequest(request) != null){
+			return validateSignUpRequest(request);
 		}
 
-		if (!Utility.isValidInput(request.getPassword())) {
-			return new ServerResponse(false,
-					"Please provide password",
-					"",
-					ServerResponseStatus.FAILED);
-		}
-		
 		try {
 			
 			User user = userRepository.findByUsernameOrEmail(request.getUsername(), request.getEmail());
 			
 			if (user != null) {
-				return new ServerResponse(false,
-						"User email or username already exist",
-						"",
-						ServerResponseStatus.FAILED);
+				return ServerResponse.badRequest("User email or username already exist");
 			}
 
 			Privilege privilege = privilegeRepository.findByName(UserPrivilageType.member);
@@ -213,37 +198,42 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ServerResponse update(String userId, SignUpRequest request) {
+	public ServerResponse update(String userId, UpdateUserDto request) {
 		try {
 
 			User user = userRepository.findByUserId(userId);
 
 			if (user == null) {
-				return new ServerResponse(false,
-						"User not found",
-						"",
-						ServerResponseStatus.FAILED);
+				return ServerResponse.badRequest("User not found");
 			}
 
 			user.setDateUpdated(new Date());
-
-			if (Utility.isValidInput(request.getUsername())) {
-				User username = userRepository.findByUsername(request.getUsername());
-
-				if (username != null) {
-					return new ServerResponse(false,
-							"Username already exist",
-							"",
-							ServerResponseStatus.FAILED);
-				}
-				user.setUsername(request.getUsername());
-			}
-
 			if (Utility.isValidInput(request.getFirstName())) {
 				user.setFirstName(request.getFirstName());
 			}
+
 			if (Utility.isValidInput(request.getLastName())) {
 				user.setLastName(request.getLastName());
+			}
+
+			if (Utility.isValidInput(request.getBiography())){
+				user.setBiography(request.getBiography());
+			}
+
+			if (Utility.isValidInput(request.getFacebook())){
+				user.setFacebook(request.getFacebook());
+			}
+
+			if (Utility.isValidInput(request.getLinkendin())){
+				user.setLinkendin(request.getLinkendin());
+			}
+
+			if (Utility.isValidInput(request.getTwitter())){
+				user.setTwitter(request.getTwitter());
+			}
+
+			if (Utility.isValidInput(request.getWebsite())){
+				user.setWebsite(request.getWebsite());
 			}
 
 
@@ -267,10 +257,7 @@ public class UserServiceImpl implements UserService {
 			User user = userRepository.findByOtp(otp);
 
 			if (user == null) {
-				return new ServerResponse(false,
-						"Invalid verification code. Please Retry!",
-						"",
-						ServerResponseStatus.FAILED);
+				return ServerResponse.badRequest("Invalid verification code. Please Retry!");
 			}
 
 			user.setActive(true);
@@ -310,17 +297,11 @@ public class UserServiceImpl implements UserService {
 			User user = userRepository.findByEmail(email);
 
 			if (user == null) {
-				return new ServerResponse(false,
-						"Email does not exist",
-						"",
-						ServerResponseStatus.FAILED);
+				return ServerResponse.badRequest("Email does not exist");
 			}
 
 			if (user.isActive()){
-				return new ServerResponse(false,
-						"Account has been activated",
-						"",
-						ServerResponseStatus.FAILED);
+				return ServerResponse.badRequest("Account has been activated");
 			}
 
 			String otp = Utility.generateRandomString(40);
@@ -356,10 +337,7 @@ public class UserServiceImpl implements UserService {
 			User user = userRepository.findByEmail(email);
 
 			if (user == null) {
-				return new ServerResponse(false,
-						"Email does not exist",
-						"",
-						ServerResponseStatus.FAILED);
+				return ServerResponse.badRequest("Email does not exist");
 			}
 
 			String otp = Utility.generateRandomString(40);
@@ -391,14 +369,14 @@ public class UserServiceImpl implements UserService {
 		ServerResponse response = new ServerResponse();
 		
 		try {
-
 			User user = userRepository.findByOtp(otp);
 
 			if (user == null) {
-				return new ServerResponse(false,
-						"Invalid verification code. Please Retry!",
-						"",
-						ServerResponseStatus.FAILED);
+				return ServerResponse.badRequest("Invalid verification code. Please Retry!");
+			}
+
+			if (!PasswordValidator.validate(password)) {
+				return ServerResponse.badRequest("Wrong password format!!!");
 			}
 
 			user.setActive(true);
@@ -452,13 +430,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ServerResponse getUserByUserId(String userId) {
-		ServerResponse response = new ServerResponse();
-		
 		if (!Utility.isValidInput(userId)) {
-			return new ServerResponse(false,
-					"Please provide userId",
-					"",
-					ServerResponseStatus.FAILED);
+			return ServerResponse.badRequest("Please provide userId");
 		}
 		
 		try {
@@ -466,10 +439,7 @@ public class UserServiceImpl implements UserService {
 			User user = userRepository.findByUserId(userId);
 			
 			if (user == null) {
-				return new ServerResponse(false,
-						"User not found",
-						"",
-						ServerResponseStatus.FAILED);
+				return ServerResponse.badRequest("User not found");
 			}
 
 			return new ServerResponse(true,
@@ -480,5 +450,108 @@ public class UserServiceImpl implements UserService {
 			return exceptionMessage(e);
 		}
 	}
-	
+
+	@Override
+	public ServerResponse changePassword(String userId, PasswordRest request) {
+		ServerResponse response = new ServerResponse();
+
+		try {
+
+			if (Utility.isValidInput(request.getOldPassword())) {
+				return ServerResponse.badRequest("Please provide old password");
+			}
+
+			if (PasswordValidator.validate(request.getNewPassword())) {
+				return ServerResponse.badRequest("Wrong password format!!!");
+			}
+
+			User user = userRepository.findByUserId(userId);
+
+			if (user == null) {
+				return ServerResponse.badRequest("User not found");
+			}
+
+			if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+				return ServerResponse.badRequest("Invalid password");
+			}
+
+			user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+
+			Mail mail = new Mail();
+			mail.setTo(user.getEmail());
+			mail.setFrom(appConstants.MAIL_USERNAME);
+			mail.setSubject("Password reset");
+
+
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("title", "Password Reset");
+			model.put("salutation", "Hello " + user.getFirstName());
+			model.put("message", "Password reset successfully.");
+			model.put("link", "");
+			mail.setModel(model);
+			mail.setTemplate("general.ftl");
+			emailService.sendSimpleMessage(mail);
+
+			response.setData("Password reset successfully");
+			response.setMessage("Password reset successfully");
+			response.setSuccess(true);
+			response.setStatus(ServerResponseStatus.OK);
+
+		} catch (Exception e) {
+			return exceptionMessage(e);
+		}
+		return response;
+	}
+
+	@Override
+	public ServerResponse uploadProfileImage(String userId, MultipartFile file) {
+
+		if (!Utility.isValidInput(userId)) {
+			return ServerResponse.badRequest("Please provide userId");
+		}
+
+		try {
+			User user = userRepository.findByUserId(userId);
+
+			if (user == null) {
+				return ServerResponse.badRequest("User not found");
+			}
+
+			String url = amazonClient.uploadFile(userId, file);
+			user.setProfileImage(url);
+
+			return new ServerResponse(true,
+					"Upload successfully",
+					user,
+					ServerResponseStatus.OK);
+
+		} catch (Exception e) {
+			return exceptionMessage(e);
+		}
+	}
+
+	@Override
+	public ServerResponse deleteProfileImage(String userId) {
+		if (!Utility.isValidInput(userId)) {
+			return ServerResponse.badRequest("Please provide userId");
+		}
+
+		try {
+			User user = userRepository.findByUserId(userId);
+
+			if (user == null) {
+				return ServerResponse.badRequest("User not found");
+			}
+
+			amazonClient.deleteFileFromS3Bucket(user.getUserId());
+			user.setProfileImage(null);
+
+			return new ServerResponse(true,
+					"Successfully deleted",
+					user,
+					ServerResponseStatus.OK);
+
+		} catch (Exception e) {
+			return exceptionMessage(e);
+		}	}
 }

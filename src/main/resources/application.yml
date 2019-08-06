@@ -19,3 +19,9 @@ spring:
             fallback: false
     protocol: smtp
     test-connection: false
+
+amazonProperties:
+  endpointUrl: https://s3.us-east-2.amazonaws.com
+  accessKey: AKIA6DF2SF2VULGZIMOA
+  secretKey: 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
+  bucketName: talentbuildersapp-api

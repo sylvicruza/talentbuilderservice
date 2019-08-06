@@ -23,7 +23,7 @@ public class AuthorizationTokenEnhancer implements TokenEnhancer {
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        com.talentbuilder.talentbuilder.model.User account = accountService.findByPhoneOrEmail(user.getUsername());
+        com.talentbuilder.talentbuilder.model.User account = accountService.findByUsernameOrEmail(user.getUsername());
                 
         final Map<String, Object> additionalInfo = new HashMap<String, Object>();
         additionalInfo.put("user", account);

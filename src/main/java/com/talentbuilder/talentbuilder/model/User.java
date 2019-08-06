@@ -52,6 +52,9 @@ public class User implements Serializable{
     @Column(name = "otp")
     private String otp;
 
+    @Column(name = "profile_image")
+    private String profileImage;
+
     @JsonIgnore
 	@Column(name = "date_created", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
@@ -70,6 +73,21 @@ public class User implements Serializable{
 	@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_privileges", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id", referencedColumnName = "privilege_id"))
 	private Collection<Privilege> privileges;
+
+    @Column(name = "biography")
+    private String biography;
+
+    @Column(name = "website")
+    private String website;
+
+    @Column(name = "twitter")
+    private String twitter;
+
+    @Column(name = "facebook")
+    private String facebook;
+
+    @Column(name = "linkedin")
+    private String linkendin;
 
     public long getId() {
         return id;
@@ -183,4 +201,51 @@ public class User implements Serializable{
         this.otp = otp;
     }
 
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
+    }
+
+    public String getLinkendin() {
+        return linkendin;
+    }
+
+    public void setLinkendin(String linkendin) {
+        this.linkendin = linkendin;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 }

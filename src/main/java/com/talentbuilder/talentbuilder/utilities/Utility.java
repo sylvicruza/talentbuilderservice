@@ -34,6 +34,10 @@ public class Utility {
         return input != null && !input.isEmpty();
     }
 
+    public static boolean isValidPassword(String input){
+        return input.length() > 8;
+    }
+
     public static boolean isValidEmail(String email){
         return EmailValidator.getInstance(true).isValid(email);
     }

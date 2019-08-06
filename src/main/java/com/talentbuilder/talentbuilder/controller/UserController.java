@@ -1,9 +1,7 @@
 package com.talentbuilder.talentbuilder.controller;
 
 
-import com.talentbuilder.talentbuilder.dto.ServerResponse;
-import com.talentbuilder.talentbuilder.dto.SignInRequest;
-import com.talentbuilder.talentbuilder.dto.SignUpRequest;
+import com.talentbuilder.talentbuilder.dto.*;
 import com.talentbuilder.talentbuilder.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.talentbuilder.talentbuilder.dto.ServerResponse.exceptionMessage;
 
@@ -43,10 +42,10 @@ public class UserController {
 		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
 	}
 
-	@ApiOperation(value = "Update user details", response = ServerResponse.class)
+	@ApiOperation(value = "Update user profile details", response = ServerResponse.class)
 	@RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
 	@ResponseBody
-	public ResponseEntity<?> update(@RequestHeader("Authorization")  String authorization, @PathVariable("userId") String userId, @RequestBody SignUpRequest request){
+	public ResponseEntity<?> update(@RequestHeader("Authorization")  String authorization, @PathVariable("userId") String userId, @RequestBody UpdateUserDto request){
 
 		ServerResponse response = new ServerResponse();
 
@@ -178,6 +177,63 @@ public class UserController {
 		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
 
 	}
-	
+
+    @ApiOperation(value = "Profile - Change Password", response = ServerResponse.class)
+    @RequestMapping(value = "/{userId}/password", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> changePassword(@RequestHeader("Authorization")  String authorization, @PathVariable("userId") String userId, @RequestBody PasswordRest request){
+
+
+        ServerResponse response = new ServerResponse();
+
+        try {
+
+            response = userService.changePassword(userId, request);
+
+        } catch (Exception e) {
+			response = exceptionMessage(e);
+        }
+
+        return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
+    }
+
+
+	@ApiOperation(value = "Upload Profile - image", response = ServerResponse.class)
+	@RequestMapping(value = "/{userId}/image", method = RequestMethod.PUT)
+	@ResponseBody
+	public ResponseEntity<?> uploadFile(@RequestHeader("Authorization")  String authorization, @PathVariable("userId") String userId, @RequestPart(value = "file") MultipartFile file){
+
+
+		ServerResponse response = new ServerResponse();
+
+		try {
+
+			response = userService.uploadProfileImage(userId, file);
+
+		} catch (Exception e) {
+			response = exceptionMessage(e);
+		}
+
+		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
+	}
+
+	@ApiOperation(value = "Delete Profile - image", response = ServerResponse.class)
+	@RequestMapping(value = "/{userId}/image", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseEntity<?> deleteProfileImage(@RequestHeader("Authorization")  String authorization, @PathVariable("userId") String userId){
+
+
+		ServerResponse response = new ServerResponse();
+
+		try {
+
+			response = userService.deleteProfileImage(userId);
+
+		} catch (Exception e) {
+			response = exceptionMessage(e);
+		}
+
+		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
+	}
 
 }
