@@ -16,23 +16,23 @@ import java.util.Date;
 @Entity
 @Table(name = "users")
 public class User implements Serializable{
-	
+
 	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false, unique = true)
 	private long id;
-	
+
 	@Column(name = "user_id", nullable = false, unique = true)
 	private String userId;
-	
+
 	@JsonIgnore
 	@Column(name = "password")
     private String password;
-	
+
 	@Column(name = "first_name")
     private String firstName;
-	
+
 	@Column(name = "last_name")
     private String lastName;
 
@@ -41,11 +41,11 @@ public class User implements Serializable{
 
     @Column(name = "username", unique = true)
     private String username;
-    
+
     @Column(name = "active")
     private boolean active;
 
-    @Column(name = "lock")
+    @Column(name = "lock_it")
     private boolean lock;
 
     @JsonIgnore
@@ -64,10 +64,10 @@ public class User implements Serializable{
     @Column(name = "date_updated", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateUpdated;
-	
+
 	@Column(name = "role")
 	private UserRoleType role;
-	
+
 	@JsonIgnore
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -239,5 +239,13 @@ public class User implements Serializable{
 
     public void setLinkendin(String linkendin) {
         this.linkendin = linkendin;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

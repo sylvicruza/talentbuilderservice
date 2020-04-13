@@ -1,10 +1,7 @@
 package com.talentbuilder.talentbuilder.service;
 
 
-import com.talentbuilder.talentbuilder.dto.ServerResponse;
-import com.talentbuilder.talentbuilder.dto.SignInRequest;
-import com.talentbuilder.talentbuilder.dto.SignUpRequest;
-import com.talentbuilder.talentbuilder.dto.UpdateUserDto;
+import com.talentbuilder.talentbuilder.dto.*;
 import com.talentbuilder.talentbuilder.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

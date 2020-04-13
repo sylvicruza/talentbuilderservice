@@ -11,6 +11,7 @@ import com.talentbuilder.talentbuilder.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +35,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 	private boolean hasBeenSetup;
 	
 	@Autowired
-    BCryptPasswordEncoder passwordEncoder;
+	BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {

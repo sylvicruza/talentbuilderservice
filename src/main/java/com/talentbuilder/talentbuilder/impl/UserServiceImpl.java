@@ -2,10 +2,7 @@ package com.talentbuilder.talentbuilder.impl;
 
 import com.talentbuilder.talentbuilder.constant.AppConstants;
 import com.talentbuilder.talentbuilder.constant.ServerResponseStatus;
-import com.talentbuilder.talentbuilder.dto.ServerResponse;
-import com.talentbuilder.talentbuilder.dto.SignInRequest;
-import com.talentbuilder.talentbuilder.dto.SignUpRequest;
-import com.talentbuilder.talentbuilder.dto.UpdateUserDto;
+import com.talentbuilder.talentbuilder.dto.*;
 import com.talentbuilder.talentbuilder.enumType.UserPrivilageType;
 import com.talentbuilder.talentbuilder.enumType.UserRoleType;
 import com.talentbuilder.talentbuilder.mail.EmailService;
@@ -125,9 +122,9 @@ public class UserServiceImpl implements UserService {
 			return ServerResponse.badRequest("Please provide password");
 		}
 
-		if (!PasswordValidator.validate(request.getPassword())) {
-			return ServerResponse.badRequest("Wrong password format!!!");
-		}
+//		if (!PasswordValidator.validate(request.getPassword())) {
+//			return ServerResponse.badRequest("Wrong password format!!!");
+//		}
 		return null;
 	}
 
@@ -372,12 +369,7 @@ public class UserServiceImpl implements UserService {
 		ServerResponse response = new ServerResponse();
 		
 		try {
-<<<<<<< HEAD
-=======
 
-
-
->>>>>>> feature/TAL-36-Profile-Details
 			User user = userRepository.findByOtp(otp);
 
 			if (user == null) {

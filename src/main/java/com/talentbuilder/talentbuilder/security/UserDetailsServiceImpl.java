@@ -57,6 +57,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         for (Privilege item : collection) {
             privileges.add(item.getName().toString());
         }
+
         return privileges;
     }
 
