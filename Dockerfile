@@ -1,4 +1,13 @@
 FROM openjdk:8
-ADD target/talentbuilder-1.jar talentbuilder-1.jar
+
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY . /usr/src/app
+
+RUN mvn package
+
 EXPOSE 8085
-ENTRYPOINT ["java","-jar","/talentbuilder-1.jar"]
+
+ENTRYPOINT ["java","-jar","target/talentbuilder-1.jar"]
