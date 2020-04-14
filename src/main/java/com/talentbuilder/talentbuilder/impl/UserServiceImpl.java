@@ -129,6 +129,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public ServerResponse create(SignUpRequest request){
 		ServerResponse response = new ServerResponse();
 

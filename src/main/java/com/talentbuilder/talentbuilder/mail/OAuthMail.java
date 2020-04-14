@@ -18,17 +18,16 @@ public class OAuthMail {
 
     // For using Oauth2
 
-    private static String TOKEN_URL = "https://www.googleapis.com/oauth2/v4/token";
+    private static String TOKEN_URL = "https://oauth2.googleapis.com/token";
     private JavaMailSender sender;
 
     // Not a best practice to store client id, secret and token in source
     // must be stored in a file.
-    private String oauthClientId = "xxxxxxxxxxxxxxxx.apps.googleusercontent.com";
-    private String oauthSecret = "xxxxxxxxxxxxxxxxxxxx";
-    private String refreshToken = "xxxxxxxxxxxxxxxxxxxxxxx";
-    private static String accessToken = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" +
-                                            "xxxxxxxxxxxxxxxxxxxx";
-    private long tokenExpires = 1458168133864L;
+    private String oauthClientId = "752744168989-lke9gb06masannrd251r2ekovk621b1k.apps.googleusercontent.com";
+    private String oauthSecret = "Uhw2EBNuURe22HBpOp826tD2";
+    private String refreshToken = "1//04tJkx8aKEnWYCgYIARAAGAQSNwF-L9IrPohyf4QYorkmPRficRA0n_cDaJxgzsACoS1s_LFlgjwv9uDOS9icquVsV-L2uMJ2fNg";
+    private static String accessToken = "ya29.a0Ae4lvC3AZ1zMR1ojFCjVki4BPXfImI3Y5Fpg5GnxG8ujyMApahZ8JtlC5-6vQGm3CJoIMFxeCSNxntMwhJtu0r40m-vxdU817PQwjBp_Gg5Tvd3rkjTYqnzvo-312PsGT2ep70flEMfI1bwMxoQHzWh_mDvVj8dOvp0";
+    private long tokenExpires = 3599L;
 
     // getters and setters
 

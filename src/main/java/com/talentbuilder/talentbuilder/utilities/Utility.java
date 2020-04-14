@@ -122,6 +122,7 @@ public class Utility {
             post.setEntity(postingString);
             post.addHeader("Content-type", "application/x-www-form-urlencoded");
             post.addHeader("Authorization", authorization);
+            System.out.println("Post :"+post+" "+urlPath);
             StringBuilder result = new StringBuilder();
             HttpResponse responseData = client.execute(post);
 
