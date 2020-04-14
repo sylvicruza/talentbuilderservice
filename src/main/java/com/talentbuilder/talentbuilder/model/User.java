@@ -89,6 +89,9 @@ public class User implements Serializable{
     @Column(name = "linkedin")
     private String linkendin;
 
+    @Column(name = "assign_mentor")
+    private String assignMentor;
+
     public long getId() {
         return id;
     }
@@ -247,5 +250,13 @@ public class User implements Serializable{
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public String getAssignMentor() {
+        return assignMentor;
+    }
+
+    public void setAssignMentor(String assignMentor) {
+        this.assignMentor = assignMentor;
     }
 }

@@ -9,6 +9,7 @@ public class UpdateUserDto {
     private String twitter;
     private String facebook;
     private String linkendin;
+    private String assignMentor;
 
     public String getFirstName() {
         return firstName;
@@ -64,5 +65,13 @@ public class UpdateUserDto {
 
     public void setLinkendin(String linkendin) {
         this.linkendin = linkendin;
+    }
+
+    public String getAssignMentor() {
+        return assignMentor;
+    }
+
+    public void setAssignMentor(String assignMentor) {
+        this.assignMentor = assignMentor;
     }
 }
