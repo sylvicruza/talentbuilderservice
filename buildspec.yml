@@ -6,10 +6,10 @@ phases:
       - echo build started on `date`
       # - mvn test
       - docker build -t talentbuildersapi .
-  deploy_build:
-    commands:
-      - echo build deployed started on `date`
-      # - mvn package
+  # deploy_build:
+  #   commands:
+  #     - echo build deployed started on `date`
+  #     # - mvn package
   post_build:
     commands:
       - docker save talentbuildersapi | gzip -c > talentbuildersapi.tar.gz
