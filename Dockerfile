@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM maven:3.5.2-jdk-8-alpine 
 
 # Create app directory
 RUN mkdir -p /usr/src/app
