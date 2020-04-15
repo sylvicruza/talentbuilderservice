@@ -11,4 +11,4 @@ RUN mvn package
 
 EXPOSE 8180
 
-ENTRYPOINT ["java","-jar","talentbuilder-1.jar"]
+ENTRYPOINT ["java","-jar","target/talentbuilder-1.jar"]
