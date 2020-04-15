@@ -4,13 +4,17 @@ phases:
     commands:
       - echo build started on `date`
       # - mvn test
+      - docker build -t talentbuildersapi .
   deploy_build:
     commands:
       - echo build deployed started on `date`
-      - mvn package
+      # - mvn package
+  post_build:
+    commands:
+      - docker save talentbuildersapi | gzip -c > talentbuildersapi.tar.gz
 artifacts:
   files:
-    - target/*.jar
+    - talentbuildersapi.tar.gz
     - appspec.yml
     - scripts/*
   discard-paths: yes

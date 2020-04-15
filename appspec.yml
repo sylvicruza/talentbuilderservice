@@ -4,15 +4,15 @@ files:
   - source: /
     destination: /home/ec2-user/talentbuildersapi
 hooks:
-  ApplicationStop:
-    - location: stop_server.sh
-      timeout: 300
-      runas: ec2-user
   BeforeInstall:
-    - location: install_dependencies.sh
-      timeout: 300
+    - location: prebuild.sh
+      timeout: 3000
+      runas: ec2-user 
+  AfterInstall:
+    - location: build.sh
+      timeout: 3000
       runas: ec2-user
   ApplicationStart:
-    - location: start_server.sh
+    - location: start.sh
       timeout: 300
       runas: ec2-user
