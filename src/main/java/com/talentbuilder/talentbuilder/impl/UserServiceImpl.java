@@ -507,7 +507,7 @@ public class UserServiceImpl implements UserService {
 
         try {
 
-            if (Utility.isValidInput(request.getOldPassword())) {
+            if (!Utility.isValidInput(request.getOldPassword())) {
                 return ServerResponse.badRequest("Please provide old password");
             }
 
@@ -537,7 +537,7 @@ public class UserServiceImpl implements UserService {
             model.put("title", "Password Reset");
             model.put("salutation", "Hello " + user.getFirstName());
             model.put("message", "Password reset successfully.");
-            model.put("link", "");
+    Res        model.put("link", "");
             mail.setModel(model);
             mail.setTemplate("general.ftl");
             emailService.sendSimpleMessage(mail);

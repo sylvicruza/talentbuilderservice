@@ -15,11 +15,10 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
+
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-
-
     private TokenStore tokenStore = new InMemoryTokenStore();
 
     @Bean
@@ -39,19 +38,17 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         resources.resourceId(resourceIds).tokenStore(tokenStore);
     }
 
-    
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.requestMatchers()
-            .and()
-            .authorizeRequests()
-            .antMatchers("/**/actuator/**", "/**/api-docs/**", "/**/swagger-ui.html", "/**/webjars/**", "/**/api/v1/", "/**/swagger-resources/**", "/**/docs/**", "/**/health/**")
-            .permitAll()
-            .antMatchers(HttpMethod.POST, "/**/user/**").permitAll()
-            .antMatchers(HttpMethod.GET, "/**/service**").permitAll()
-            .anyRequest()
-            .authenticated();
+                .and()
+                .authorizeRequests()
+                .antMatchers("/**/actuator/**", "/**/api-docs/**", "/**/swagger-ui.html", "/**/webjars/**", "/**/api/v1/", "/**/swagger-resources/**", "/**/docs/**", "/**/health/**")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/**/user/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/**/service**").permitAll()
+                .anyRequest()
+                .authenticated();
     }
-
-
 }

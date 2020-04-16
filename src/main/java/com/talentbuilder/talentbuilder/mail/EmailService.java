@@ -60,6 +60,7 @@ public class EmailService {
         System.out.println("PRINT SENDER INFORMATION: "+sender+" and TOKEN: "+OAuthMail.getAccessToken());
 //        helper.setFrom(sender);
         emailSender.send(message);
+        logger.info("Email successfully sent to {} with subject '{}'", mail.getTo(), mail.getModel());
     }
 
     public void sendMessage(Mail mail) {
