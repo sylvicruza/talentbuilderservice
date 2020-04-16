@@ -178,6 +178,24 @@ public class UserController {
 
 	}
 
+	@ApiOperation(value = "Delete user", response = ServerResponse.class)
+	@RequestMapping(value = "/{userId}/delete/{password}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseEntity<?> deleteUser(@RequestHeader("Authorization")  String authorization, @PathVariable("userId") String userId,@PathVariable("password") String password){
+
+		ServerResponse response = new ServerResponse();
+
+		try {
+			response = userService.deleteUserDetails(userId,password);
+
+		} catch (Exception e) {
+			response = exceptionMessage(e);
+
+		}
+
+		return new ResponseEntity<>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
+	}
+
     @ApiOperation(value = "Profile - Change Password", response = ServerResponse.class)
     @RequestMapping(value = "/{userId}/password", method = RequestMethod.POST)
     @ResponseBody

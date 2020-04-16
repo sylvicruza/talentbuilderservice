@@ -3,8 +3,10 @@ package com.talentbuilder.talentbuilder.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.talentbuilder.talentbuilder.enumType.UserRoleType;
+import com.talentbuilder.talentbuilder.repository.AbstractEntity;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,13 +17,8 @@ import java.util.Date;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "users")
-public class User implements Serializable{
-
-	@JsonIgnore
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false, unique = true)
-	private long id;
+@Where(clause ="del_flag='N'")
+public class User extends AbstractEntity {
 
 	@Column(name = "user_id", nullable = false, unique = true)
 	private String userId;
@@ -91,14 +88,6 @@ public class User implements Serializable{
 
     @Column(name = "assign_mentor")
     private String assignMentor;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getUserId() {
         return userId;

@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findByUsernameOrEmail(request.getUsername(), request.getEmail());
 
             if (user != null) {
-                return ServerResponse.badRequest("User email or username already exist");
+                return ServerResponse.badRequest("User email and username already exist");
             }
 
             Privilege privilege = privilegeRepository.findByName(UserPrivilageType.member);
@@ -455,6 +455,48 @@ public class UserServiceImpl implements UserService {
                     ServerResponseStatus.OK);
         }
         catch (Exception e) {
+            return exceptionMessage(e);
+        }
+    }
+
+    @Override
+    public ServerResponse deleteUserDetails(String userId,String password) {
+        ServerResponse response = new ServerResponse();
+
+        if (!Utility.isValidInput(userId)) {
+            return new ServerResponse(true,
+                    "",
+                    "",
+                    ServerResponseStatus.FAILED);
+        }
+
+        try {
+
+            User user = userRepository.findByUserId(userId);
+
+            if (user == null) {
+                return new ServerResponse(false,
+                        "User not found",
+                        "",
+                        ServerResponseStatus.FAILED);
+            }
+            if(!user.getPassword().matches(password)){
+                return new ServerResponse(false,
+                        "Incorrect password",
+                        "",
+                        ServerResponseStatus.FAILED);
+            }
+
+
+           userRepository.softDelete("Y",new Date(),user.getId());
+
+            return new ServerResponse(true,
+                    "Deleted successfully",
+                    userRepository.findById(user.getId()),
+                    ServerResponseStatus.OK);
+
+
+        } catch (Exception e) {
             return exceptionMessage(e);
         }
     }
