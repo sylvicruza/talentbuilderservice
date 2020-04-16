@@ -35,7 +35,9 @@ public interface UserService {
 	
 	ServerResponse getUserByUserId(String userId);
 
-	ServerResponse changePassword(String userId, PasswordRest request);
+    ServerResponse deleteUserDetails(String userId,String password);
+
+    ServerResponse changePassword(String userId, PasswordRest request);
 
 	ServerResponse uploadProfileImage(String userId, MultipartFile file);
 

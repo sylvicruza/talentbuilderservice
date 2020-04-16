@@ -101,6 +101,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		user.setRole(UserRoleType.SUPERADMIN);
 		user.setPrivileges(adminPrivileges);
 		user.setUserId("TMA" + System.currentTimeMillis());
+		user.setDelFlag("N");
 		User findEmail = userRepository.findByEmail(user.getEmail());
 
 		if (findEmail != null) {
