@@ -480,11 +480,10 @@ public class UserServiceImpl implements UserService {
                         "",
                         ServerResponseStatus.FAILED);
             }
-            if(!user.getPassword().matches(password)){
+            if (!passwordEncoder.matches(password, user.getPassword())) {
                 return new ServerResponse(false,
                         "Incorrect password",
-                        "",
-                        ServerResponseStatus.FAILED);
+                        "", ServerResponseStatus.FAILED);
             }
 
 
@@ -537,7 +536,7 @@ public class UserServiceImpl implements UserService {
             model.put("title", "Password Reset");
             model.put("salutation", "Hello " + user.getFirstName());
             model.put("message", "Password reset successfully.");
-    Res        model.put("link", "");
+            model.put("link", "");
             mail.setModel(model);
             mail.setTemplate("general.ftl");
             emailService.sendSimpleMessage(mail);
