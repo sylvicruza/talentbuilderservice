@@ -1,4 +1,4 @@
-package com.talentbuilder.talentbuilder.repository;
+package com.talentbuilder.talentbuilder.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.talentbuilder.talentbuilder.model.SerializableEntity;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;

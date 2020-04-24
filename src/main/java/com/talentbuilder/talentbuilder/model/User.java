@@ -3,13 +3,11 @@ package com.talentbuilder.talentbuilder.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.talentbuilder.talentbuilder.enumType.UserRoleType;
-import com.talentbuilder.talentbuilder.repository.AbstractEntity;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 

@@ -11,6 +11,8 @@ import com.talentbuilder.talentbuilder.model.Privilege;
 import com.talentbuilder.talentbuilder.model.User;
 import com.talentbuilder.talentbuilder.repository.PrivilegeRepository;
 import com.talentbuilder.talentbuilder.repository.UserRepository;
+import com.talentbuilder.talentbuilder.scheduler.ScheduleEmailRequest;
+import com.talentbuilder.talentbuilder.scheduler.ScheduleService;
 import com.talentbuilder.talentbuilder.service.UserService;
 import com.talentbuilder.talentbuilder.utilities.AmazonClient;
 import com.talentbuilder.talentbuilder.utilities.OtpService;
@@ -45,6 +47,8 @@ public class UserServiceImpl implements UserService {
     private EmailService emailService;
     @Autowired
     private AmazonClient amazonClient;
+    @Autowired
+    private ScheduleService scheduleService;
 
     @Override
     public Collection<User> findAll() {
@@ -263,6 +267,8 @@ public class UserServiceImpl implements UserService {
 
             user.setActive(true);
             user.setOtp(null);
+            user.setDelFlag("N");
+            user.setDeletedOn(null);
 
             Mail mail = new Mail();
             mail.setTo(user.getEmail());
@@ -488,10 +494,28 @@ public class UserServiceImpl implements UserService {
 
 
            userRepository.softDelete("Y",new Date(),user.getId());
+            String otp = Utility.generateRandomString(40);
+            user.setOtp(otp);
+
+            Mail mail = new Mail();
+            mail.setTo(user.getEmail());
+            mail.setFrom(appConstants.MAIL_USERNAME);
+
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("link", appConstants.APP_WEB_URL + "/delete-account?token=" + otp);
+            mail.setSubject("Account Deleted");
+            mail.setModel(model);
+            mail.setTemplate("delete_account.ftl");
+            emailService.sendSimpleMessage(mail);
+            ScheduleEmailRequest request=new ScheduleEmailRequest();
+            request.setEmail(user.getEmail());
+            request.setSubject("Account Deleted");
+            request.setBody("You have been successfully removed from Talent Builder’s Database");
+            scheduleService.
+                    scheduleEmail(request);
 
             return new ServerResponse(true,
-                    "Deleted successfully",
-                    userRepository.findById(user.getId()),
+                    "You have been successfully removed from Talent Builder’s Database", user,
                     ServerResponseStatus.OK);
 
 
@@ -499,6 +523,8 @@ public class UserServiceImpl implements UserService {
             return exceptionMessage(e);
         }
     }
+
+
 
     @Override
     public ServerResponse changePassword(String userId, PasswordRest request) {

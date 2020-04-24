@@ -1,5 +1,6 @@
 package com.talentbuilder.talentbuilder.repository;
 
+import com.talentbuilder.talentbuilder.model.AbstractEntity;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
